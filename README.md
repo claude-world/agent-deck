@@ -35,7 +35,7 @@ Open **http://localhost:3002** — add your project, describe a task, and launch
 ### From source
 
 ```bash
-git clone https://github.com/anthropics/agent-deck.git
+git clone https://github.com/claude-world/agent-deck.git
 cd agent-deck
 npm install
 npm run dev        # Dev mode with hot reload (localhost:5200)
