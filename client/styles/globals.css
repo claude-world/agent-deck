@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Dark Base ─────────────────────────────────── */
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a4a transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #3a3a4a;
+    border-radius: 3px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #4a4a5a;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: #f9fafb;
+  }
+}
+
+/* ─── Animations ────────────────────────────────── */
+
+@layer utilities {
+  .animate-slide-in {
+    animation: slide-in 0.2s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.2s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.15s ease-out;
+  }
+
+  .animate-pulse-once {
+    animation: pulse-border 0.5s ease-in-out;
+  }
+
+  .animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+  50% { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ─── React Flow Dark Theme ─────────────────────── */
+
+.react-flow__background {
+  background-color: #0a0a0f !important;
+}
+
+/* Remove default white node borders and backgrounds */
+.react-flow__node {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  font-family: 'DM Sans', system-ui, sans-serif !important;
+}
+
+.react-flow__node.selected {
+  box-shadow: none !important;
+}
+
+.react-flow__node:focus,
+.react-flow__node:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Handle styling */
+.react-flow__handle {
+  background: #3a3a4a !important;
+  border: none !important;
+  width: 6px !important;
+  height: 6px !important;
+}
+
+/* Edge styling */
+.react-flow__edge-path {
+  stroke: #3a3a4a !important;
+  stroke-width: 1.5px !important;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke: #6366f1 !important;
+  stroke-dasharray: 5 !important;
+}
+
+/* Marker (arrow) colors */
+.react-flow__arrowhead polyline,
+.react-flow__arrowhead polygon {
+  stroke: #3a3a4a !important;
+  fill: #3a3a4a !important;
+}
+
+/* Controls */
+.react-flow__controls {
+  background: #12121a !important;
+  border: 1px solid #2a2a3a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.react-flow__controls-button {
+  background: #12121a !important;
+  border-color: #2a2a3a !important;
+  fill: #9ca3af !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #1a1a25 !important;
+  fill: #e5e7eb !important;
+}
+
+/* Selection box */
+.react-flow__selection {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Minimap */
+.react-flow__minimap {
+  background: #12121a !important;
+  border: 1px solid #2a2a3a !important;
+  border-radius: 8px !important;
+}
+
+/* Attribution hidden */
+.react-flow__attribution {
+  display: none !important;
+}

@@ -1,0 +1,17 @@
+name: "Squad: Plan + Build + Test"
+description: Full development squad with budget limit
+settings:
+  max_budget_usd: 5.0
+agents:
+  - name: planner
+    model: sonnet
+    prompt: Create a detailed implementation plan.
+    agent_type: planner
+  - name: implementer
+    model: sonnet
+    prompt: Implement the feature according to the plan.
+    agent_type: implementer
+  - name: tester
+    model: haiku
+    prompt: Write comprehensive tests for the implementation.
+    agent_type: tester

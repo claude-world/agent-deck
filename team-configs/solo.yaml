@@ -1,0 +1,7 @@
+name: Solo Agent
+description: Single agent for focused work
+agents:
+  - name: worker
+    model: sonnet
+    prompt: Complete the assigned task.
+    agent_type: general

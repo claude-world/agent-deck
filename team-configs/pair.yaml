@@ -1,0 +1,11 @@
+name: "Pair: Builder + Reviewer"
+description: One builds, one reviews
+agents:
+  - name: builder
+    model: sonnet
+    prompt: Implement the feature described in the task.
+    agent_type: implementer
+  - name: reviewer
+    model: sonnet
+    prompt: Review the code changes for quality, security, and correctness.
+    agent_type: reviewer

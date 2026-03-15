@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.env
+.env.*
+.DS_Store
+*.log
+
+# Database
+data/*.db
+data/*.db-shm
+data/*.db-wal
+*.db
+*.db-shm
+*.db-wal
+
+# Dev artifacts
+.playwright-mcp/
+*.tmp
