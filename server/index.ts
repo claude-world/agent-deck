@@ -47,8 +47,11 @@ const workflowExecutor = new WorkflowExecutor(deckManager);
 const coreStore = new DeckStore(db);
 const workspaceManager = new WorkspaceManager(coreStore);
 
-// Auto-add cwd as workspace on startup
-try { workspaceManager.add(process.cwd()); } catch {}
+// Auto-add cwd as workspace on startup (skip root dir in Electron)
+const cwd = process.cwd();
+if (cwd !== "/" && cwd !== "C:\\") {
+  try { workspaceManager.add(cwd); } catch {}
+}
 
 // ─── REST Routes ───────────────────────────────────
 
@@ -56,9 +59,10 @@ app.use("/api/deck", createDeckRouter(deckManager, workflowExecutor, workspaceMa
 app.use("/api/deck/workspaces", createWorkspaceRouter(workspaceManager));
 
 // Serve static files (production)
-app.use(express.static(path.join(__dirname, "../dist")));
+const staticDir = process.env.DECK_STATIC_DIR || path.join(__dirname, "../dist");
+app.use(express.static(staticDir));
 app.get("/", (_req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
+  res.sendFile(path.join(staticDir, "index.html"));
 });
 
 // ─── HTTP + WebSocket Server ───────────────────────
@@ -75,7 +79,7 @@ if (crashed.length > 0) {
 }
 
 // Load YAML team configs
-const teamConfigDir = path.join(__dirname, "../team-configs");
+const teamConfigDir = process.env.DECK_TEAM_CONFIGS || path.join(__dirname, "../team-configs");
 loadTeamConfigs(teamConfigDir)
   .then((configs) => {
     if (configs.length > 0) {

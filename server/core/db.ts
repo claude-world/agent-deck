@@ -6,6 +6,7 @@
 
 import Database, { type Database as DatabaseType } from "better-sqlite3";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { v4 as uuidv4 } from "uuid";
 import type {
@@ -22,7 +23,13 @@ import type {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = path.join(__dirname, "../../data/deck.db");
+const DB_PATH = process.env.DECK_DB_PATH || path.join(__dirname, "../../data/deck.db");
+
+// Ensure data directory exists
+const dbDir = path.dirname(DB_PATH);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 
 // =====================================================
 // Schema Init
@@ -163,6 +170,8 @@ export function initSchema(db: Database.Database): void {
     `ALTER TABLE deck_workflows ADD COLUMN commit_hash TEXT`,
     `ALTER TABLE deck_workflows ADD COLUMN commit_message TEXT`,
     `ALTER TABLE deck_workflows ADD COLUMN pushed INTEGER DEFAULT 0`,
+    `ALTER TABLE deck_workflows ADD COLUMN changes_json TEXT`,
+    `ALTER TABLE deck_workflows ADD COLUMN pr_url TEXT`,
   ];
   for (const sql of migrations) {
     try { db.exec(sql); } catch {}
@@ -342,6 +351,12 @@ export class DeckStore {
       ),
       updateWorkflowCommit: this.db.prepare(
         `UPDATE deck_workflows SET commit_hash = ?, commit_message = ?, pushed = ? WHERE id = ?`
+      ),
+      updateWorkflowChanges: this.db.prepare(
+        `UPDATE deck_workflows SET changes_json = ? WHERE id = ?`
+      ),
+      updateWorkflowPrUrl: this.db.prepare(
+        `UPDATE deck_workflows SET pr_url = ? WHERE id = ?`
       ),
       getWorkflowsByWorkspace: this.db.prepare(
         `SELECT * FROM deck_workflows WHERE workspace_id = ? ORDER BY created_at DESC LIMIT 50`
@@ -646,6 +661,14 @@ export class DeckStore {
 
   updateWorkflowCommit(workflowId: string, commitHash: string, commitMessage: string, pushed: boolean): void {
     this.stmts.updateWorkflowCommit.run(commitHash, commitMessage, pushed ? 1 : 0, workflowId);
+  }
+
+  updateWorkflowChanges(workflowId: string, changesJson: string): void {
+    this.stmts.updateWorkflowChanges.run(changesJson, workflowId);
+  }
+
+  updateWorkflowPrUrl(workflowId: string, prUrl: string): void {
+    this.stmts.updateWorkflowPrUrl.run(prUrl, workflowId);
   }
 
   getWorkflowsByWorkspace(workspaceId: string): any[] {

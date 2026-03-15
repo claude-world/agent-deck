@@ -1,7 +1,9 @@
 {
-  "name": "agent-deck",
+  "name": "@claude-world/agent-deck",
   "version": "1.0.0",
   "type": "module",
+  "main": "dist-electron/main.cjs",
+  "author": "Claude World <hello@claude-world.com>",
   "description": "Web-based command center for monitoring and managing multiple AI coding agents. Supports Claude Code, Codex, Gemini CLI, and any LiteLLM-compatible model.",
   "keywords": [
     "ai",
@@ -27,7 +29,9 @@
   },
   "files": [
     "bin/",
+    "cli/",
     "dist/",
+    "dist-cli/",
     "server/",
     "team-configs/",
     "package.json",
@@ -38,15 +42,88 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "tsx watch server/index.ts",
     "dev:client": "vite --port 5200",
+    "dev:electron": "NODE_ENV=development electron electron/main.ts",
     "start": "tsx server/index.ts",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
+    "build:electron": "node scripts/build-electron.mjs",
+    "dist": "npm run build:electron && electron-builder",
+    "dist:mac": "npm run build:electron && electron-builder --mac",
+    "dist:win": "npm run build:electron && electron-builder --win",
+    "dist:linux": "npm run build:electron && electron-builder --linux",
+    "build:cli": "node scripts/build-cli.mjs",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run build:cli"
+  },
+  "build": {
+    "appId": "com.claude-world.agent-deck",
+    "productName": "Agent Deck",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*",
+      "team-configs/**/*"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**"
+    ],
+    "icon": "build/icon.png",
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "darkModeSupport": true
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development"
+    }
   },
   "dependencies": {
     "@dagrejs/dagre": "^2.0.4",
     "@xyflow/react": "^12.10.1",
-    "better-sqlite3": "^11.7.0",
+    "better-sqlite3": "^12.8.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -56,9 +133,11 @@
     "uuid": "^10.0.0",
     "ws": "^8.18.0",
     "yaml": "^2.8.2",
+    "tsx": "^4.19.0",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.3",
     "@types/better-sqlite3": "^7.6.12",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -70,9 +149,11 @@
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.0",
+    "electron": "^41.0.2",
+    "electron-builder": "^26.8.1",
+    "esbuild": "^0.25.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "tsx": "^4.19.0",
     "typescript": "^5.5.0",
     "vite": "^5.4.0"
   }

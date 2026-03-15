@@ -92,7 +92,8 @@ Rules:
 - For monorepos, assign agents to specific package directories when possible.
 - dependsOn contains agent names that must complete before this agent starts.
 - estimatedCost in USD, estimatedTimeMinutes is wall-clock time (agents run in parallel where possible).
-- Agent names should be short, kebab-case identifiers (e.g., "auth-impl", "api-tests").`;
+- Agent names should be short, kebab-case identifiers (e.g., "auth-impl", "api-tests").
+- Do NOT create agents for git commit, push, or finalize operations -- those are handled separately by the system.`;
 }
 
 function callClaude(prompt: string, cwd: string): Promise<string> {

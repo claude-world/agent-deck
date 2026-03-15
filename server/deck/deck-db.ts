@@ -124,6 +124,12 @@ export function initDeckSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_deck_workflow_nodes ON deck_workflow_nodes(workflow_id);
     CREATE INDEX IF NOT EXISTS idx_deck_workflow_edges ON deck_workflow_edges(workflow_id);
 
+    CREATE TABLE IF NOT EXISTS deck_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS deck_workspaces (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -145,6 +151,8 @@ export function initDeckSchema(db: Database.Database): void {
     `ALTER TABLE deck_workflows ADD COLUMN commit_hash TEXT`,
     `ALTER TABLE deck_workflows ADD COLUMN commit_message TEXT`,
     `ALTER TABLE deck_workflows ADD COLUMN pushed INTEGER DEFAULT 0`,
+    `ALTER TABLE deck_workflows ADD COLUMN changes_json TEXT`,
+    `ALTER TABLE deck_workflows ADD COLUMN pr_url TEXT`,
   ];
   for (const sql of migrations) {
     try { db.exec(sql); } catch {}
@@ -294,6 +302,14 @@ export class DeckStore {
         `SELECT * FROM deck_workflow_edges WHERE workflow_id = ?`
       ),
 
+      // Settings
+      getSetting: this.db.prepare(`SELECT value FROM deck_settings WHERE key = ?`),
+      upsertSetting: this.db.prepare(`
+        INSERT INTO deck_settings (key, value, updated_at) VALUES (?, ?, datetime('now'))
+        ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = datetime('now')
+      `),
+      getAllSettings: this.db.prepare(`SELECT * FROM deck_settings`),
+
       // Workspaces
       insertWorkspace: this.db.prepare(`
         INSERT INTO deck_workspaces (id, name, path, framework, language, git_branch)
@@ -317,6 +333,12 @@ export class DeckStore {
       ),
       updateWorkflowCommit: this.db.prepare(
         `UPDATE deck_workflows SET commit_hash = ?, commit_message = ?, pushed = ? WHERE id = ?`
+      ),
+      updateWorkflowChanges: this.db.prepare(
+        `UPDATE deck_workflows SET changes_json = ? WHERE id = ?`
+      ),
+      updateWorkflowPrUrl: this.db.prepare(
+        `UPDATE deck_workflows SET pr_url = ? WHERE id = ?`
       ),
       getWorkflowsByWorkspace: this.db.prepare(
         `SELECT * FROM deck_workflows WHERE workspace_id = ? ORDER BY created_at DESC LIMIT 50`
@@ -676,8 +698,36 @@ export class DeckStore {
     this.stmts.updateWorkflowCommit.run(commitHash, commitMessage, pushed ? 1 : 0, workflowId);
   }
 
+  updateWorkflowChanges(workflowId: string, changesJson: string): void {
+    this.stmts.updateWorkflowChanges.run(changesJson, workflowId);
+  }
+
+  updateWorkflowPrUrl(workflowId: string, prUrl: string): void {
+    this.stmts.updateWorkflowPrUrl.run(prUrl, workflowId);
+  }
+
   getWorkflowsByWorkspace(workspaceId: string): any[] {
     return this.stmts.getWorkflowsByWorkspace.all(workspaceId);
+  }
+
+  // === Settings ===
+
+  getSetting(key: string): string | undefined {
+    const row = this.stmts.getSetting.get(key) as { value: string } | undefined;
+    return row?.value;
+  }
+
+  setSetting(key: string, value: string): void {
+    this.stmts.upsertSetting.run(key, value);
+  }
+
+  getAllSettings(): Record<string, string> {
+    const rows = this.stmts.getAllSettings.all() as { key: string; value: string }[];
+    const result: Record<string, string> = {};
+    for (const row of rows) {
+      result[row.key] = row.value;
+    }
+    return result;
   }
 
   // === Cleanup ===

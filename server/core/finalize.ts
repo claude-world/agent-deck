@@ -36,9 +36,14 @@ export function getChangedFiles(workspacePath: string): ChangedFile[] {
     for (const line of status.split("\n").filter(Boolean)) {
       const x = line[0]; // staged
       const y = line[1]; // unstaged
-      const filePath = line.slice(3).trim();
+      let filePath = line.slice(3).trim();
 
       if (filePath.startsWith(".git/")) continue;
+
+      // Handle renamed files: "R  old-name -> new-name"
+      if (x === "R" && filePath.includes(" -> ")) {
+        filePath = filePath.split(" -> ").pop()!;
+      }
 
       let fileStatus: ChangedFile["status"] = "modified";
       if (x === "A" || y === "?") fileStatus = "added";
@@ -260,6 +265,42 @@ export function executeFinalize(config: FinalizeConfig): FinalizeResult {
     pushed,
     filesCommitted: selectedFiles.length,
   };
+}
+
+/** Check if the GitHub CLI (gh) is available */
+export function isGhAvailable(): boolean {
+  try {
+    execFileSync("gh", ["--version"], { timeout: 5000, stdio: "pipe" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Create a pull request using the GitHub CLI */
+export function createPullRequest(
+  workspacePath: string,
+  options: { title: string; body?: string; base?: string }
+): { prUrl: string } {
+  const args = ["pr", "create", "--title", options.title];
+  if (options.body) args.push("--body", options.body);
+  if (options.base) args.push("--base", options.base);
+
+  const output = execFileSync("gh", args, {
+    cwd: workspacePath,
+    encoding: "utf8",
+    timeout: 30000,
+  }).trim();
+
+  // gh pr create outputs the PR URL as the last line
+  const lines = output.split("\n");
+  const prUrl = lines[lines.length - 1].trim();
+
+  if (!prUrl.startsWith("https://")) {
+    throw new Error(`gh pr create did not return a valid URL: ${prUrl.slice(0, 100)}`);
+  }
+
+  return { prUrl };
 }
 
 /** Resolve the claude binary path */

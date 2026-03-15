@@ -8,6 +8,8 @@ import {
   getDiff,
   generateCommitMessage,
   executeFinalize,
+  isGhAvailable,
+  createPullRequest,
 } from "../core/finalize.js";
 import type { WorkflowExecutor } from "../deck/workflow-executor.js";
 import type { WorkspaceManager } from "../core/workspace-manager.js";
@@ -83,6 +85,10 @@ export function createFinalizeRouter(
       }
 
       const wsPath = resolveWorkspacePath(workspaceId);
+
+      // Capture changes before commit
+      const changesBeforeCommit = getChangedFiles(wsPath);
+
       const result = executeFinalize({
         workflowId: workflowId || "",
         workspacePath: wsPath,
@@ -91,10 +97,13 @@ export function createFinalizeRouter(
         push: !!push,
       });
 
-      // Update workflow record with commit info
+      // Update workflow record with commit info and changes
       if (workflowId) {
         try {
           store.updateWorkflowCommit(workflowId, result.commitHash, result.commitMessage, result.pushed);
+        } catch {}
+        try {
+          store.updateWorkflowChanges(workflowId, JSON.stringify(changesBeforeCommit));
         } catch {}
 
         // Mark workflow as completed
@@ -105,6 +114,47 @@ export function createFinalizeRouter(
       }
 
       res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  /** Store changes_json for a workflow */
+  router.post("/changes", (req, res) => {
+    try {
+      const { workflowId, files } = req.body;
+      if (!workflowId || !files) {
+        return res.status(400).json({ error: "workflowId and files are required" });
+      }
+      store.updateWorkflowChanges(workflowId, JSON.stringify(files));
+      res.json({ ok: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  /** Create a pull request via GitHub CLI */
+  router.post("/pr", (req, res) => {
+    try {
+      if (!isGhAvailable()) {
+        return res.status(400).json({ error: "GitHub CLI (gh) is not installed or not authenticated. Install from https://cli.github.com" });
+      }
+
+      const { workflowId, workspaceId, title, body, base } = req.body;
+      if (!title) {
+        return res.status(400).json({ error: "title is required" });
+      }
+
+      const wsPath = resolveWorkspacePath(workspaceId);
+      const { prUrl } = createPullRequest(wsPath, { title, body, base });
+
+      if (workflowId) {
+        try {
+          store.updateWorkflowPrUrl(workflowId, prUrl);
+        } catch {}
+      }
+
+      res.json({ prUrl });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

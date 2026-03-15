@@ -69,10 +69,12 @@ export function TopBar({ project, activeWorkspace }: TopBarProps) {
     }
   }, [mode, activeWorkflow]);
 
+  const isElectron = !!(window as any).agentDeck?.isElectron;
+
   return (
-    <div className="shrink-0 h-10 border-b border-deck-border bg-deck-surface flex items-center justify-between px-4">
+    <div className={`shrink-0 h-10 border-b border-deck-border bg-deck-surface flex items-center justify-between ${isElectron ? "pl-20 pr-4" : "px-4"}`} style={isElectron ? { WebkitAppRegion: "drag" } as any : undefined}>
       {/* Left: project info */}
-      <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-center gap-3 min-w-0" style={{ WebkitAppRegion: "no-drag" } as any}>
         {page !== "home" && activeWorkspace && (
           <button
             onClick={goHome}
@@ -103,7 +105,7 @@ export function TopBar({ project, activeWorkspace }: TopBarProps) {
 
       {/* Right: cost + agent count (only when workspace is active) */}
       {activeWorkspace && (
-        <div className="flex items-center gap-3 text-xs text-deck-text-dim shrink-0">
+        <div className="flex items-center gap-3 text-xs text-deck-text-dim shrink-0" style={{ WebkitAppRegion: "no-drag" } as any}>
           <span className="font-mono text-deck-success">
             ${totalCost.toFixed(2)}
           </span>

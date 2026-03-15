@@ -16,3 +16,8 @@ data/*.db-wal
 # Dev artifacts
 .playwright-mcp/
 *.tmp
+release/ dist-electron/ dist-cli/ build/
+release/
+dist-electron/
+dist-cli/
+build/
