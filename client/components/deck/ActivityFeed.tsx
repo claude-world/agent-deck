@@ -82,7 +82,7 @@ function EventEntry({ event }: { event: DeckEvent }) {
   return (
     <div className="flex items-start gap-2 py-1.5 px-3 hover:bg-gray-50/50">
       <span
-        className={`text-[10px] font-medium px-1.5 py-0.5 rounded shrink-0 mt-0.5 ${colorClass}`}
+        className={`text-[10px] font-medium px-1.5 py-0.5 rounded-sm shrink-0 mt-0.5 ${colorClass}`}
       >
         {event.event_type}
       </span>
@@ -104,7 +104,7 @@ function EventEntry({ event }: { event: DeckEvent }) {
           </span>
         </div>
         {isExpanded && parsedContent && (
-          <pre className="text-[11px] bg-white border border-gray-100 rounded p-2 mt-1 overflow-x-auto max-h-48 overflow-y-auto font-mono text-gray-600">
+          <pre className="text-[11px] bg-white border border-gray-100 rounded-sm p-2 mt-1 overflow-x-auto max-h-48 overflow-y-auto font-mono text-gray-600">
             {parsedContent.slice(0, 2000)}
           </pre>
         )}

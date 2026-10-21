@@ -61,7 +61,7 @@ export function ProjectCard({ workspace, onSelect, onRemove, onRename }: Project
                 }}
                 onBlur={handleRenameSubmit}
                 onClick={(e) => e.stopPropagation()}
-                className="text-sm font-semibold text-deck-text-bright bg-deck-bg border border-deck-accent rounded px-1.5 py-0.5 w-full focus:outline-none"
+                className="text-sm font-semibold text-deck-text-bright bg-deck-bg border border-deck-accent rounded-sm px-1.5 py-0.5 w-full focus:outline-hidden"
               />
             ) : (
               <h3 className="text-sm font-semibold text-deck-text-bright truncate">
@@ -77,7 +77,7 @@ export function ProjectCard({ workspace, onSelect, onRemove, onRename }: Project
               e.stopPropagation();
               setMenuOpen(!menuOpen);
             }}
-            className="p-1 rounded hover:bg-deck-surface-2 text-deck-text-dim opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+            className="p-1 rounded-sm hover:bg-deck-surface-2 text-deck-text-dim opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01" />
@@ -88,17 +88,17 @@ export function ProjectCard({ workspace, onSelect, onRemove, onRename }: Project
         {/* Tags */}
         <div className="flex items-center gap-1.5 flex-wrap mb-3">
           {workspace.framework && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-deck-accent/10 text-deck-accent">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-deck-accent/10 text-deck-accent">
               {workspace.framework}
             </span>
           )}
           {workspace.language && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-text-dim">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-text-dim">
               {workspace.language}
             </span>
           )}
           {workspace.git_branch && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-text-dim font-mono">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-text-dim font-mono">
               {workspace.git_branch}
             </span>
           )}

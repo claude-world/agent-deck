@@ -53,13 +53,13 @@ export function RightPanel({ sendJsonMessage }: RightPanelProps) {
           <span className="font-medium text-sm text-deck-text-bright truncate">
             {displayName}
           </span>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-muted">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-muted">
             {displayModel}
           </span>
         </div>
         <button
           onClick={() => useDeckStore.getState().setSelectedAgentId(null)}
-          className="p-1 rounded hover:bg-deck-surface-2 text-deck-muted hover:text-deck-text transition-colors"
+          className="p-1 rounded-sm hover:bg-deck-surface-2 text-deck-muted hover:text-deck-text transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

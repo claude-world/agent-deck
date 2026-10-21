@@ -7,12 +7,14 @@
 
 /** Model context limits (tokens) */
 const MODEL_CONTEXT_LIMITS: Record<string, number> = {
-  haiku: 200_000,
-  sonnet: 200_000,
-  opus: 200_000,
-  "claude-haiku-4-5": 200_000,
-  "claude-sonnet-4-6": 200_000,
-  "claude-opus-4-6": 200_000,
+  haiku: 1_000_000,
+  sonnet: 1_000_000,
+  opus: 1_000_000,
+  fable: 1_000_000,
+  "claude-haiku-5-5": 1_000_000,
+  "claude-sonnet-5-5": 1_000_000,
+  "claude-opus-5-5": 1_000_000,
+  "claude-fable-5-1": 1_000_000,
 };
 
 export interface ContextUsage {

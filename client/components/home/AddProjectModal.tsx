@@ -53,7 +53,7 @@ export function AddProjectModal({ onAdd, onClose }: AddProjectModalProps) {
               value={path}
               onChange={(e) => setPath(e.target.value)}
               placeholder="/Users/me/my-project"
-              className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-sm text-deck-text placeholder:text-deck-muted focus:outline-none focus:border-deck-accent"
+              className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-sm text-deck-text placeholder:text-deck-muted focus:outline-hidden focus:border-deck-accent"
               autoFocus
             />
           </div>
@@ -67,7 +67,7 @@ export function AddProjectModal({ onAdd, onClose }: AddProjectModalProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Auto-detected from directory"
-              className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-sm text-deck-text placeholder:text-deck-muted focus:outline-none focus:border-deck-accent"
+              className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-sm text-deck-text placeholder:text-deck-muted focus:outline-hidden focus:border-deck-accent"
             />
           </div>
 

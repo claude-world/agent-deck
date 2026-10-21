@@ -1,76 +1,112 @@
-import { useEffect } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useCallback, useEffect, useRef } from "react";
 import { useDeckStore } from "../stores/deck-store";
 
 const WS_URL = `ws://${window.location.hostname}:${window.location.port || "3002"}/ws`;
+const RECONNECT_INTERVAL_MS = 3000;
 
 export function useDeckWebSocket() {
-  const store = useDeckStore();
-  const { sendJsonMessage, readyState, lastJsonMessage } = useWebSocket(
-    WS_URL,
-    {
-      shouldReconnect: () => true,
-      reconnectAttempts: Infinity,
-      reconnectInterval: 3000,
-    }
-  );
+  const wsRef = useRef<WebSocket | null>(null);
+  const queueRef = useRef<string[]>([]);
 
-  // Subscribe on connect
+  // Messages sent while disconnected are queued and flushed on (re)connect
+  const sendJsonMessage = useCallback((msg: unknown) => {
+    const data = JSON.stringify(msg);
+    const ws = wsRef.current;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(data);
+    } else {
+      queueRef.current.push(data);
+    }
+  }, []);
+
   useEffect(() => {
-    store.setConnected(readyState === ReadyState.OPEN);
-    if (readyState === ReadyState.OPEN) {
-      sendJsonMessage({ type: "deck:subscribe" });
-    }
-  }, [readyState]);
+    let disposed = false;
+    let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
 
-  // Route messages to store
-  useEffect(() => {
-    if (!lastJsonMessage) return;
-    const msg = lastJsonMessage as any;
+    const connect = () => {
+      const ws = new WebSocket(WS_URL);
+      wsRef.current = ws;
 
-    switch (msg.type) {
-      case "deck:agents:list":
-        store.setAgents(msg.agents);
-        break;
+      // Subscribe on connect
+      ws.onopen = () => {
+        useDeckStore.getState().setConnected(true);
+        ws.send(JSON.stringify({ type: "deck:subscribe" }));
+        for (const data of queueRef.current.splice(0)) ws.send(data);
+      };
 
-      case "deck:agent:status":
-        store.updateAgent(msg.agent);
-        break;
-
-      case "deck:agent:output":
-        store.pushOutputEvent(msg.agentId, msg.event);
-        break;
-
-      case "deck:agent:context":
-        store.setContextUsage(msg.agentId, msg.context);
-        break;
-
-      case "deck:workflow:status":
-        store.setActiveWorkflow(msg.workflow);
-        if (msg.workflow.status === "finalizing") {
-          store.setMode("finalizing");
-        } else if (
-          ["completed", "failed", "cancelled"].includes(msg.workflow.status)
-        ) {
-          store.setMode("completed");
+      ws.onmessage = (event) => {
+        let msg: any;
+        try {
+          msg = JSON.parse(event.data);
+        } catch {
+          return;
         }
-        break;
+        routeMessage(msg, sendJsonMessage);
+      };
 
-      case "deck:workflow:node":
-        store.updateWorkflowNode(msg.workflowId, msg.node);
-        if (msg.node.status === "running" && msg.node.agentId) {
-          sendJsonMessage({
-            type: "deck:agent:focus",
-            agentId: msg.node.agentId,
-          });
-        }
-        break;
+      ws.onclose = () => {
+        useDeckStore.getState().setConnected(false);
+        if (!disposed) reconnectTimer = setTimeout(connect, RECONNECT_INTERVAL_MS);
+      };
+    };
 
-      case "error":
-        store.addToast(msg.error);
-        break;
-    }
-  }, [lastJsonMessage]);
+    connect();
 
-  return { sendJsonMessage, readyState };
+    return () => {
+      disposed = true;
+      clearTimeout(reconnectTimer);
+      wsRef.current?.close();
+      wsRef.current = null;
+    };
+  }, [sendJsonMessage]);
+
+  return { sendJsonMessage };
+}
+
+// Route messages to store
+function routeMessage(msg: any, sendJsonMessage: (msg: unknown) => void): void {
+  const store = useDeckStore.getState();
+
+  switch (msg.type) {
+    case "deck:agents:list":
+      store.setAgents(msg.agents);
+      break;
+
+    case "deck:agent:status":
+      store.updateAgent(msg.agent);
+      break;
+
+    case "deck:agent:output":
+      store.pushOutputEvent(msg.agentId, msg.event);
+      break;
+
+    case "deck:agent:context":
+      store.setContextUsage(msg.agentId, msg.context);
+      break;
+
+    case "deck:workflow:status":
+      store.setActiveWorkflow(msg.workflow);
+      if (msg.workflow.status === "finalizing") {
+        store.setMode("finalizing");
+      } else if (
+        ["completed", "failed", "cancelled"].includes(msg.workflow.status)
+      ) {
+        store.setMode("completed");
+      }
+      break;
+
+    case "deck:workflow:node":
+      store.updateWorkflowNode(msg.workflowId, msg.node);
+      if (msg.node.status === "running" && msg.node.agentId) {
+        sendJsonMessage({
+          type: "deck:agent:focus",
+          agentId: msg.node.agentId,
+        });
+      }
+      break;
+
+    case "error":
+      store.addToast(msg.error);
+      break;
+  }
 }

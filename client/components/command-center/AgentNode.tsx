@@ -55,7 +55,7 @@ function AgentNodeComponent({ data, selected }: NodeProps) {
       <Handle
         type="target"
         position={Position.Top}
-        className="!bg-deck-border !w-2 !h-2 !border-0"
+        className="bg-deck-border! w-2! h-2! border-0!"
       />
 
       {/* Header */}
@@ -86,7 +86,7 @@ function AgentNodeComponent({ data, selected }: NodeProps) {
         <span className="truncate flex-1" title={d.workdir}>
           {d.workdir === "." ? "root" : d.workdir}
         </span>
-        <span className="px-1 py-0.5 bg-deck-surface-2 rounded text-deck-muted font-mono">
+        <span className="px-1 py-0.5 bg-deck-surface-2 rounded-sm text-deck-muted font-mono">
           {d.model}
         </span>
         <CostBadge cost={d.cost} />
@@ -95,7 +95,7 @@ function AgentNodeComponent({ data, selected }: NodeProps) {
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!bg-deck-border !w-2 !h-2 !border-0"
+        className="bg-deck-border! w-2! h-2! border-0!"
       />
     </div>
   );

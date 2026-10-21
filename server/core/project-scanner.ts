@@ -15,6 +15,11 @@ import type { ProjectStructure, PackageInfo } from "./types.js";
 /** Scan a workspace directory and return its project structure */
 export async function scanProject(rootPath: string): Promise<ProjectStructure> {
   const absRoot = path.resolve(rootPath);
+  // The Electron app starts with cwd "/". Walking the whole disk blocks the server
+  // (and triggers macOS privacy prompts), so only scan real project directories.
+  if (path.parse(absRoot).root === absRoot) {
+    throw new Error("No project selected: refusing to scan the filesystem root");
+  }
 
   const name = await detectProjectName(absRoot);
   const monorepoType = detectMonorepoType(absRoot);

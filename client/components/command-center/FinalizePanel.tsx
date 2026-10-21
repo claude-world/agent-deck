@@ -194,7 +194,7 @@ export function FinalizePanel() {
             {finalizeState.files.map((file) => (
               <div
                 key={file.path}
-                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-deck-surface-2 group"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-deck-surface-2 group"
               >
                 <input
                   type="checkbox"
@@ -232,7 +232,7 @@ export function FinalizePanel() {
           placeholder={finalizeState.generating ? "Generating..." : "Enter commit message..."}
           disabled={finalizeState.generating}
           rows={3}
-          className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-xs font-mono text-deck-text placeholder:text-deck-muted focus:outline-none focus:border-deck-accent resize-none"
+          className="w-full bg-deck-bg border border-deck-border rounded-lg px-3 py-2 text-xs font-mono text-deck-text placeholder:text-deck-muted focus:outline-hidden focus:border-deck-accent resize-none"
         />
       </div>
 

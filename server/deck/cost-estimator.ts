@@ -5,16 +5,23 @@
  * then replaces with actual cost when available.
  */
 
-/** Pricing per million tokens (USD) */
+/** Pricing per million tokens (USD). Claude Code aliases resolve to the newest model in each family. */
 const MODEL_PRICING: Record<string, { input: number; output: number }> = {
-  sonnet: { input: 3, output: 15 },
-  opus: { input: 15, output: 75 },
-  haiku: { input: 0.25, output: 1.25 },
-  // Fallback aliases
-  "claude-sonnet-4-6": { input: 3, output: 15 },
-  "claude-opus-4-6": { input: 15, output: 75 },
-  "claude-haiku-4-5": { input: 0.25, output: 1.25 },
+  sonnet: { input: 2, output: 10 },
+  opus: { input: 4, output: 20 },
+  haiku: { input: 0.1, output: 0.5 },
+  fable: { input: 10, output: 50 },
+  // Full model IDs
+  "claude-sonnet-5-5": { input: 2, output: 10 },
+  "claude-opus-5-5": { input: 4, output: 20 },
+  "claude-haiku-5-5": { input: 0.1, output: 0.5 },
+  "claude-fable-5-1": { input: 10, output: 50 },
 };
+
+/** Pricing for a model alias or ID, falling back to Sonnet for unknown models */
+export function getModelPricing(model: string): { input: number; output: number } {
+  return MODEL_PRICING[model] || MODEL_PRICING.sonnet;
+}
 
 export interface CostEstimate {
   agentId: string;
@@ -115,7 +122,7 @@ class AgentCostTracker {
 
     // Estimate: ~4 chars per token
     const estimatedTokens = Math.ceil(this.outputCharCount / 4);
-    const pricing = MODEL_PRICING[this.model] || MODEL_PRICING.sonnet;
+    const pricing = getModelPricing(this.model);
     const estimatedCost = (estimatedTokens / 1_000_000) * pricing.output;
     const elapsedMinutes = (Date.now() - this.startedAt) / 60_000;
 

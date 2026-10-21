@@ -1,0 +1,10 @@
+# Dependencies allowed to run install scripts (pnpm 11)
+allowBuilds:
+  better-sqlite3: true
+  electron-winstaller: false
+  esbuild: true
+
+overrides:
+  # global-agent 4 drops roarr -> sprintf-js (vulnerable, no patched release).
+  # Only electron-builder's Electron download uses it, behind ELECTRON_GET_USE_PROXY.
+  global-agent: ^4.1.3

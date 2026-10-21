@@ -175,7 +175,7 @@ export function TeamConfig({
               <button
                 key={key}
                 onClick={() => loadTemplate(key)}
-                className="text-xs px-2.5 py-1.5 rounded border border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-600"
+                className="text-xs px-2.5 py-1.5 rounded-sm border border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-600"
               >
                 {TEMPLATES[key].name}
               </button>
@@ -191,14 +191,14 @@ export function TeamConfig({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Team config name"
-          className="w-full text-sm px-3 py-1.5 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+          className="w-full text-sm px-3 py-1.5 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
         />
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description (optional)"
-          className="w-full text-xs px-3 py-1.5 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+          className="w-full text-xs px-3 py-1.5 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
         />
         <textarea
           value={configText}
@@ -207,7 +207,7 @@ export function TeamConfig({
             if (jsonError) validateJson(e.target.value);
           }}
           placeholder='{"name": "...", "agents": [{"name": "...", "prompt": "...", "model": "sonnet"}]}'
-          className={`w-full h-40 text-xs font-mono px-3 py-2 border rounded focus:outline-none resize-none ${
+          className={`w-full h-40 text-xs font-mono px-3 py-2 border rounded focus:outline-hidden resize-none ${
             jsonError
               ? "border-red-300 focus:border-red-400"
               : "border-gray-200 focus:border-blue-300"
@@ -220,7 +220,7 @@ export function TeamConfig({
           <button
             onClick={handleSave}
             disabled={!name.trim() || !configText.trim()}
-            className="text-xs px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-40"
+            className="text-xs px-3 py-1.5 bg-blue-500 text-white rounded-sm hover:bg-blue-600 disabled:opacity-40"
           >
             {editingId ? "Update" : "Save Config"}
           </button>
@@ -233,7 +233,7 @@ export function TeamConfig({
                 setConfigText("");
                 setJsonError(null);
               }}
-              className="text-xs px-3 py-1.5 border border-gray-200 rounded hover:bg-gray-50 text-gray-600"
+              className="text-xs px-3 py-1.5 border border-gray-200 rounded-sm hover:bg-gray-50 text-gray-600"
             >
               Cancel
             </button>
@@ -251,7 +251,7 @@ export function TeamConfig({
             {onReloadYaml && (
               <button
                 onClick={onReloadYaml}
-                className="text-[10px] px-2 py-1 border border-gray-200 rounded hover:bg-gray-50 text-gray-500"
+                className="text-[10px] px-2 py-1 border border-gray-200 rounded-sm hover:bg-gray-50 text-gray-500"
                 title="Reload YAML team configs from disk"
               >
                 Reload YAML
@@ -279,7 +279,7 @@ export function TeamConfig({
                           {team.name}
                         </span>
                         {isFileSource && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-violet-100 text-violet-600 font-medium">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-violet-100 text-violet-600 font-medium">
                             YAML
                           </span>
                         )}
@@ -296,7 +296,7 @@ export function TeamConfig({
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => onLaunch(team.id)}
-                        className="text-xs px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                        className="text-xs px-2 py-1 bg-green-500 text-white rounded-sm hover:bg-green-600"
                       >
                         Launch
                       </button>
@@ -304,20 +304,20 @@ export function TeamConfig({
                         <>
                           <button
                             onClick={() => handleEdit(team)}
-                            className="text-xs px-2 py-1 border border-gray-200 rounded hover:bg-gray-50 text-gray-600"
+                            className="text-xs px-2 py-1 border border-gray-200 rounded-sm hover:bg-gray-50 text-gray-600"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleExport(team)}
-                            className="text-xs px-2 py-1 border border-gray-200 rounded hover:bg-gray-50 text-gray-600"
+                            className="text-xs px-2 py-1 border border-gray-200 rounded-sm hover:bg-gray-50 text-gray-600"
                             title="Export JSON"
                           >
                             Export
                           </button>
                           <button
                             onClick={() => onDelete(team.id)}
-                            className="text-xs px-2 py-1 text-red-500 hover:bg-red-50 rounded"
+                            className="text-xs px-2 py-1 text-red-500 hover:bg-red-50 rounded-sm"
                           >
                             Delete
                           </button>

@@ -152,7 +152,7 @@ export function PlanningCanvas({
         </ReactFlow>
 
         {/* Estimate badge */}
-        <div className="absolute top-3 left-3 bg-deck-surface/90 backdrop-blur rounded-lg border border-deck-border px-3 py-2 flex items-center gap-4 text-xs">
+        <div className="absolute top-3 left-3 bg-deck-surface/90 backdrop-blur-sm rounded-lg border border-deck-border px-3 py-2 flex items-center gap-4 text-xs">
           <span className="text-deck-text-dim">
             {plan.agents.length} agents
           </span>

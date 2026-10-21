@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { useDeckStore } from "../../stores/deck-store";
 import type { Page } from "../../stores/deck-store";
 
