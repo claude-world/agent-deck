@@ -143,7 +143,7 @@ export function AgentCard({
           <span className="font-medium text-sm text-gray-900 truncate">
             {agent.name}
           </span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 shrink-0">
+          <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-gray-100 text-gray-500 shrink-0">
             {agent.agent_type}
           </span>
           {agent.runtime && agent.runtime !== "claude-code" && (
@@ -158,7 +158,7 @@ export function AgentCard({
             </span>
           )}
           {agent.interactive && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-100 text-purple-600 shrink-0">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-purple-100 text-purple-600 shrink-0">
               interactive
             </span>
           )}
@@ -170,7 +170,7 @@ export function AgentCard({
               e.stopPropagation();
               onToggleVisibility(agent.id);
             }}
-            className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+            className="p-1 rounded-sm hover:bg-gray-100 text-gray-400 hover:text-gray-600"
             title={isVisible ? "Hide" : "Show"}
           >
             {isVisible ? (
@@ -191,7 +191,7 @@ export function AgentCard({
                 e.stopPropagation();
                 onKill(agent.id);
               }}
-              className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-500"
+              className="p-1 rounded-sm hover:bg-red-50 text-gray-400 hover:text-red-500"
               title="Kill agent"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

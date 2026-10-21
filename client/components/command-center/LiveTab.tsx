@@ -76,13 +76,13 @@ function LiveEventLine({ event }: { event: StreamEvent }) {
   switch (event.type) {
     case "text":
       return (
-        <pre className="text-deck-text whitespace-pre-wrap break-words leading-relaxed">
+        <pre className="text-deck-text whitespace-pre-wrap wrap-break-word leading-relaxed">
           {event.data?.content || ""}
         </pre>
       );
     case "thinking":
       return (
-        <pre className="text-purple-400/60 italic whitespace-pre-wrap break-words leading-relaxed pl-2 border-l border-purple-800/30">
+        <pre className="text-purple-400/60 italic whitespace-pre-wrap wrap-break-word leading-relaxed pl-2 border-l border-purple-800/30">
           {event.data?.content || ""}
         </pre>
       );

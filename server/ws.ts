@@ -1,14 +1,15 @@
 /**
- * Agent Deck v1.0 - WebSocket Module
+ * Agent Deck - WebSocket Module
  *
  * Extracted WS logic: subscribers, message routing, heartbeat.
  */
 
 import { WebSocketServer, WebSocket } from "ws";
-import type { Server } from "http";
+import type { IncomingMessage, Server } from "http";
 import type { DeckManager } from "./deck/deck-manager.js";
 import type { WorkflowExecutor } from "./deck/workflow-executor.js";
 import type { Agent, StreamEvent, WorkflowState, NodeState } from "./core/types.js";
+import { isLocalRequest } from "./core/local-access.js";
 
 interface WSClient extends WebSocket {
   isAlive?: boolean;
@@ -20,7 +21,12 @@ export function createWebSocketServer(
   deckManager: DeckManager,
   workflowExecutor: WorkflowExecutor
 ): WebSocketServer {
-  const wss = new WebSocketServer({ server, path: "/ws" });
+  // Browsers do not apply CORS to WebSockets, so check Host/Origin on upgrade
+  const wss = new WebSocketServer({
+    server,
+    path: "/ws",
+    verifyClient: ({ req }: { req: IncomingMessage }) => isLocalRequest(req.headers),
+  });
   const subscribers = new Set<WSClient>();
 
   // ─── Forward deck events ─────────────────────────
@@ -64,7 +70,7 @@ export function createWebSocketServer(
     ws.isAlive = true;
     ws.focusedAgentIds = new Set();
 
-    ws.send(JSON.stringify({ type: "connected", message: "Agent Deck v1.0" }));
+    ws.send(JSON.stringify({ type: "connected", message: "Agent Deck" }));
 
     ws.on("pong", () => { ws.isAlive = true; });
 

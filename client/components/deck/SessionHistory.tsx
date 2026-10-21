@@ -96,7 +96,7 @@ function SessionCard({
             {config.name || "Unknown Agent"}
           </span>
           <span
-            className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${getStatusColor(session.status)}`}
+            className={`text-[10px] font-medium px-1.5 py-0.5 rounded-sm ${getStatusColor(session.status)}`}
           >
             {session.status}
           </span>
@@ -118,7 +118,7 @@ function SessionCard({
         {session.output_snapshot && (
           <button
             onClick={onViewOutput}
-            className="text-[10px] px-2 py-1 rounded border border-gray-200 text-gray-500 hover:bg-gray-50"
+            className="text-[10px] px-2 py-1 rounded-sm border border-gray-200 text-gray-500 hover:bg-gray-50"
           >
             View Output
           </button>
@@ -126,7 +126,7 @@ function SessionCard({
         {canResume && (
           <button
             onClick={onResume}
-            className="text-[10px] px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+            className="text-[10px] px-2 py-1 rounded-sm bg-blue-500 text-white hover:bg-blue-600"
           >
             Resume
           </button>

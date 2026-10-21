@@ -9,6 +9,7 @@
 import { EventEmitter } from "events";
 import type { AgentAdapter, AdapterEvents } from "../adapter-interface.js";
 import type { SpawnAgentConfig, StreamEvent, CompleteEvent } from "../types.js";
+import { getModelPricing } from "../cost-estimator.js";
 
 export class LiteLLMAdapter extends EventEmitter implements AgentAdapter {
   private agentId: string;
@@ -89,7 +90,7 @@ export class LiteLLMAdapter extends EventEmitter implements AgentAdapter {
     let outputTokens = 0;
 
     try {
-      const model = this.mapModel(config.model || "sonnet");
+      const model = mapLiteLLMModel(config.model || "sonnet");
       const response = await fetch(`${this.proxyUrl}/chat/completions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -207,25 +208,21 @@ export class LiteLLMAdapter extends EventEmitter implements AgentAdapter {
     }
   }
 
-  private mapModel(model: string): string {
-    // Map short names to model IDs that LiteLLM recognizes
-    const mapping: Record<string, string> = {
-      sonnet: "claude-sonnet-4-6-20250514",
-      opus: "claude-opus-4-6-20250514",
-      haiku: "claude-haiku-4-5-20251001",
-    };
-    return mapping[model] || model;
-  }
-
   private estimateCost(inputTokens: number, outputTokens: number, model: string): number {
-    const pricing: Record<string, { input: number; output: number }> = {
-      sonnet: { input: 3, output: 15 },
-      opus: { input: 15, output: 75 },
-      haiku: { input: 0.25, output: 1.25 },
-    };
-    const p = pricing[model] || pricing.sonnet;
+    const p = getModelPricing(model);
     return (inputTokens / 1_000_000) * p.input + (outputTokens / 1_000_000) * p.output;
   }
+}
+
+/** Map Claude Code short names to model IDs that LiteLLM recognizes */
+export function mapLiteLLMModel(model: string): string {
+  const mapping: Record<string, string> = {
+    sonnet: "claude-sonnet-5-5",
+    opus: "claude-opus-5-5",
+    haiku: "claude-haiku-5-5",
+    fable: "claude-fable-5-1",
+  };
+  return mapping[model] || model;
 }
 
 // Type-safe emitter

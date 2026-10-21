@@ -429,7 +429,7 @@ export function MissionPlanner({
               if (e.key === "Enter" && !isPlanning && !isRunning) handlePlan();
             }}
             placeholder="Describe what you want to build, fix, or refactor..."
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
+            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
             disabled={isPlanning || isRunning}
           />
           {phase === "idle" || phase === "scanning" ? (
@@ -502,7 +502,7 @@ export function MissionPlanner({
                 type="text"
                 value={projectPath}
                 onChange={(e) => setProjectPath(e.target.value)}
-                className="px-2 py-0.5 text-[11px] border border-blue-400 rounded bg-white focus:outline-none w-64 font-mono"
+                className="px-2 py-0.5 text-[11px] border border-blue-400 rounded-sm bg-white focus:outline-hidden w-64 font-mono"
                 autoFocus
                 onBlur={() => {
                   setEditingPath(false);
@@ -545,7 +545,7 @@ export function MissionPlanner({
         </div>
 
         {error && (
-          <div className="mt-2 text-xs text-red-600 bg-red-50 px-3 py-1.5 rounded">
+          <div className="mt-2 text-xs text-red-600 bg-red-50 px-3 py-1.5 rounded-sm">
             {error}
           </div>
         )}
@@ -570,7 +570,7 @@ export function MissionPlanner({
             <Controls
               position="bottom-right"
               showInteractive={false}
-              className="!bg-white !shadow-sm !border !border-gray-200 !rounded-lg"
+              className="bg-white! shadow-xs! border! border-gray-200! rounded-lg!"
             />
           </ReactFlow>
         ) : (
@@ -599,7 +599,7 @@ export function MissionPlanner({
 
         {/* Execution status bar */}
         {(isRunning || isDone) && statusCounts && (
-          <div className="absolute top-3 left-3 bg-white/90 backdrop-blur rounded-lg shadow-sm border border-gray-200 px-3 py-2 flex items-center gap-3 text-xs">
+          <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-xs border border-gray-200 px-3 py-2 flex items-center gap-3 text-xs">
             <span className={`font-medium ${isDone ? (workflow?.status === "completed" ? "text-green-600" : "text-red-600") : "text-blue-600"}`}>
               {workflow?.status === "completed"
                 ? "Completed"

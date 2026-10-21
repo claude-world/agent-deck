@@ -19,6 +19,7 @@ Agent Deck is designed as a **localhost-only** developer tool:
 
 - The server binds to `127.0.0.1` only — never expose it on a public network
 - No authentication is required (localhost trust model)
+- Requests whose `Host` or `Origin` is not a loopback address are rejected with `403`, and WebSocket upgrades are checked the same way, so other websites (and DNS-rebinding pages) cannot drive the API from your browser
 - All git operations use `execFileSync` (no shell injection)
 - No secrets are stored — delegates auth to your existing Claude CLI session
 - SQLite database contains only local workspace metadata

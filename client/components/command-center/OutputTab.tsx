@@ -46,7 +46,7 @@ function OutputEventBlock({ event }: { event: StreamEvent }) {
   switch (event.type) {
     case "text":
       return (
-        <pre className="text-xs text-deck-text whitespace-pre-wrap break-words font-mono leading-relaxed">
+        <pre className="text-xs text-deck-text whitespace-pre-wrap wrap-break-word font-mono leading-relaxed">
           {event.data?.content || ""}
         </pre>
       );
@@ -62,7 +62,7 @@ function OutputEventBlock({ event }: { event: StreamEvent }) {
             <span className="italic">thinking</span>
           </button>
           {expanded && (
-            <pre className="text-xs text-purple-300/60 italic whitespace-pre-wrap break-words font-mono pl-3 border-l border-purple-800/30 mt-0.5">
+            <pre className="text-xs text-purple-300/60 italic whitespace-pre-wrap wrap-break-word font-mono pl-3 border-l border-purple-800/30 mt-0.5">
               {event.data?.content || ""}
             </pre>
           )}
@@ -91,7 +91,7 @@ function OutputEventBlock({ event }: { event: StreamEvent }) {
             </span>
           </button>
           {expanded && event.data?.toolInput && (
-            <pre className="text-[11px] text-deck-text-dim font-mono mt-1 pl-4 whitespace-pre-wrap break-words max-h-48 overflow-y-auto">
+            <pre className="text-[11px] text-deck-text-dim font-mono mt-1 pl-4 whitespace-pre-wrap wrap-break-word max-h-48 overflow-y-auto">
               {typeof event.data.toolInput === "string"
                 ? event.data.toolInput
                 : JSON.stringify(event.data.toolInput, null, 2)}

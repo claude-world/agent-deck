@@ -84,7 +84,7 @@ export function Settings() {
                   }
                   min={1}
                   max={50}
-                  className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none focus:border-deck-accent"
+                  className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden focus:border-deck-accent"
                 />
               </div>
               <div>
@@ -102,7 +102,7 @@ export function Settings() {
                   }
                   min={0.1}
                   step={0.5}
-                  className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none focus:border-deck-accent"
+                  className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden focus:border-deck-accent"
                 />
               </div>
             </div>
@@ -117,11 +117,12 @@ export function Settings() {
                   onChange={(e) =>
                     setSettings({ ...settings, defaultModel: e.target.value })
                   }
-                  className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none focus:border-deck-accent"
+                  className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden focus:border-deck-accent"
                 >
-                  <option value="haiku">Haiku 4.5</option>
-                  <option value="sonnet">Sonnet 4.6</option>
-                  <option value="opus">Opus 4.6</option>
+                  <option value="haiku">Haiku 5.5</option>
+                  <option value="sonnet">Sonnet 5.5</option>
+                  <option value="opus">Opus 5.5</option>
+                  <option value="fable">Fable 5.1</option>
                 </select>
               </div>
               <div>
@@ -136,7 +137,7 @@ export function Settings() {
                       defaultRuntime: e.target.value,
                     })
                   }
-                  className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none focus:border-deck-accent"
+                  className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden focus:border-deck-accent"
                 >
                   <option value="claude-code">Claude Code</option>
                   <option value="codex">Codex</option>
@@ -190,7 +191,7 @@ export function Settings() {
                           {team.name}
                         </span>
                         {team.source === "file" && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-900/30 text-purple-300 font-medium">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-purple-900/30 text-purple-300 font-medium">
                             YAML
                           </span>
                         )}
@@ -227,7 +228,7 @@ export function Settings() {
               ].map(([key, desc]) => (
                 <div key={key} className="flex items-center justify-between">
                   <span className="text-deck-text-dim">{desc}</span>
-                  <kbd className="text-[10px] font-mono px-2 py-0.5 bg-deck-surface-2 border border-deck-border rounded text-deck-muted">
+                  <kbd className="text-[10px] font-mono px-2 py-0.5 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-muted">
                     {key}
                   </kbd>
                 </div>

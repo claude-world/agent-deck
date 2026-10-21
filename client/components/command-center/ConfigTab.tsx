@@ -27,11 +27,12 @@ export function ConfigTab({ agent, workflowNode }: ConfigTabProps) {
         <select
           value={model}
           disabled
-          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none"
+          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden"
         >
-          <option value="haiku">Haiku 4.5</option>
-          <option value="sonnet">Sonnet 4.6</option>
-          <option value="opus">Opus 4.6</option>
+          <option value="haiku">Haiku 5.5</option>
+          <option value="sonnet">Sonnet 5.5</option>
+          <option value="opus">Opus 5.5</option>
+          <option value="fable">Fable 5.1</option>
         </select>
       </div>
 
@@ -43,7 +44,7 @@ export function ConfigTab({ agent, workflowNode }: ConfigTabProps) {
         <select
           value={runtime}
           disabled
-          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text focus:outline-none"
+          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text focus:outline-hidden"
         >
           <option value="claude-code">Claude Code</option>
           <option value="codex">Codex</option>
@@ -61,7 +62,7 @@ export function ConfigTab({ agent, workflowNode }: ConfigTabProps) {
           type="text"
           value={workdir}
           disabled
-          className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text-dim"
+          className="w-full text-xs font-mono px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text-dim"
         />
       </div>
 
@@ -74,7 +75,7 @@ export function ConfigTab({ agent, workflowNode }: ConfigTabProps) {
           value={prompt}
           readOnly
           rows={8}
-          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded text-deck-text resize-none focus:outline-none font-mono"
+          className="w-full text-xs px-3 py-2 bg-deck-surface-2 border border-deck-border rounded-sm text-deck-text resize-none focus:outline-hidden font-mono"
         />
       </div>
 
@@ -139,7 +140,7 @@ export function ConfigTab({ agent, workflowNode }: ConfigTabProps) {
           {workflowNode.error && (
             <div>
               <span className="text-[10px] text-deck-muted">Error</span>
-              <p className="text-xs text-deck-error mt-0.5 break-words">
+              <p className="text-xs text-deck-error mt-0.5 wrap-break-word">
                 {workflowNode.error}
               </p>
             </div>

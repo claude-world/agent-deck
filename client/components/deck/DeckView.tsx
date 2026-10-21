@@ -433,7 +433,7 @@ export function DeckView({
           </button>
           <button
             onClick={() => setShowSpawnDialog(true)}
-            className="text-xs px-2.5 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="text-xs px-2.5 py-1.5 bg-blue-500 text-white rounded-sm hover:bg-blue-600"
           >
             + Launch Agent
           </button>
@@ -521,7 +521,7 @@ export function DeckView({
                   value={spawnName}
                   onChange={(e) => setSpawnName(e.target.value)}
                   placeholder="e.g., builder, reviewer, researcher"
-                  className="w-full text-sm px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+                  className="w-full text-sm px-3 py-2 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
                   autoFocus
                 />
               </div>
@@ -534,7 +534,7 @@ export function DeckView({
                   onChange={(e) => setSpawnPrompt(e.target.value)}
                   placeholder="What should this agent do?"
                   rows={4}
-                  className="w-full text-sm px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-300 resize-none"
+                  className="w-full text-sm px-3 py-2 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300 resize-none"
                 />
               </div>
               <div className="grid grid-cols-3 gap-3">
@@ -545,7 +545,7 @@ export function DeckView({
                   <select
                     value={spawnRuntime}
                     onChange={(e) => setSpawnRuntime(e.target.value as RuntimeType)}
-                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
                   >
                     <option value="claude-code">Claude Code</option>
                     <option value="codex">Codex</option>
@@ -560,11 +560,12 @@ export function DeckView({
                   <select
                     value={spawnModel}
                     onChange={(e) => setSpawnModel(e.target.value)}
-                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
                   >
-                    <option value="haiku">Haiku 4.5</option>
-                    <option value="sonnet">Sonnet 4.6</option>
-                    <option value="opus">Opus 4.6</option>
+                    <option value="haiku">Haiku 5.5</option>
+                    <option value="sonnet">Sonnet 5.5</option>
+                    <option value="opus">Opus 5.5</option>
+                    <option value="fable">Fable 5.1</option>
                   </select>
                 </div>
                 <div>
@@ -576,7 +577,7 @@ export function DeckView({
                     value={spawnWorkspace}
                     onChange={(e) => setSpawnWorkspace(e.target.value)}
                     placeholder="/path/to/project"
-                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-300"
+                    className="w-full text-sm px-3 py-2 border border-gray-200 rounded-sm focus:outline-hidden focus:border-blue-300"
                   />
                 </div>
               </div>
@@ -586,7 +587,7 @@ export function DeckView({
                   id="interactive-mode"
                   checked={spawnInteractive}
                   onChange={(e) => setSpawnInteractive(e.target.checked)}
-                  className="rounded border-gray-300"
+                  className="rounded-sm border-gray-300"
                 />
                 <label htmlFor="interactive-mode" className="text-xs text-gray-600">
                   Interactive mode (keep stdin open for follow-up messages)
@@ -596,14 +597,14 @@ export function DeckView({
             <div className="flex justify-end gap-2 mt-5">
               <button
                 onClick={() => setShowSpawnDialog(false)}
-                className="text-xs px-3 py-1.5 border border-gray-200 rounded hover:bg-gray-50 text-gray-600"
+                className="text-xs px-3 py-1.5 border border-gray-200 rounded-sm hover:bg-gray-50 text-gray-600"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSpawn}
                 disabled={!spawnName.trim() || !spawnPrompt.trim()}
-                className="text-xs px-4 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-40"
+                className="text-xs px-4 py-1.5 bg-blue-500 text-white rounded-sm hover:bg-blue-600 disabled:opacity-40"
               >
                 Launch
               </button>

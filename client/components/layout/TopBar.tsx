@@ -90,11 +90,11 @@ export function TopBar({ project, activeWorkspace }: TopBarProps) {
           {activeWorkspace ? activeWorkspace.name : page === "home" ? "Agent Deck" : project?.name || "Agent Deck"}
         </span>
         {activeWorkspace?.git_branch ? (
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-text-dim truncate">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-text-dim truncate">
             {activeWorkspace.git_branch}
           </span>
         ) : page !== "home" && project?.gitBranch ? (
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-text-dim truncate">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-text-dim truncate">
             {project.gitBranch}
           </span>
         ) : null}

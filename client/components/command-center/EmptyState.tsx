@@ -76,7 +76,7 @@ export function EmptyState({
             if (e.key === "Enter" && task.trim()) onPlan();
           }}
           placeholder="e.g., Add dark mode toggle to the settings page..."
-          className="flex-1 px-4 py-2.5 bg-deck-surface border border-deck-border rounded-lg text-sm text-deck-text placeholder:text-deck-muted focus:outline-none focus:border-deck-accent focus:ring-1 focus:ring-deck-accent/30"
+          className="flex-1 px-4 py-2.5 bg-deck-surface border border-deck-border rounded-lg text-sm text-deck-text placeholder:text-deck-muted focus:outline-hidden focus:border-deck-accent focus:ring-1 focus:ring-deck-accent/30"
           autoFocus
         />
         <button

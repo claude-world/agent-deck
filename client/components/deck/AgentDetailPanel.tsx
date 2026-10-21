@@ -94,7 +94,7 @@ function StatusBadge({ status }: { status: string }) {
     dead: "bg-red-100 text-red-700",
   };
   return (
-    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${colors[status] || "bg-gray-100 text-gray-600"}`}>
+    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-sm ${colors[status] || "bg-gray-100 text-gray-600"}`}>
       {status}
     </span>
   );
@@ -102,7 +102,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function ModelBadge({ model }: { model: string }) {
   return (
-    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">
+    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm bg-gray-100 text-gray-500">
       {model}
     </span>
   );
@@ -137,7 +137,7 @@ function OutputBlockEntry({ block }: { block: OutputBlock }) {
     case "text":
       return (
         <div className="px-3 py-1">
-          <pre className="text-sm text-gray-200 whitespace-pre-wrap break-words font-mono leading-relaxed">
+          <pre className="text-sm text-gray-200 whitespace-pre-wrap wrap-break-word font-mono leading-relaxed">
             {block.content}
             {block.isPartial && <span className="animate-pulse text-blue-400">|</span>}
           </pre>
@@ -155,7 +155,7 @@ function OutputBlockEntry({ block }: { block: OutputBlock }) {
             <span className="italic">thinking</span>
           </button>
           {!isCollapsed && (
-            <pre className="text-xs text-purple-300/70 italic whitespace-pre-wrap break-words font-mono leading-relaxed pl-3 border-l border-purple-800/30">
+            <pre className="text-xs text-purple-300/70 italic whitespace-pre-wrap wrap-break-word font-mono leading-relaxed pl-3 border-l border-purple-800/30">
               {block.content}
               {block.isPartial && <span className="animate-pulse">|</span>}
             </pre>
@@ -220,7 +220,7 @@ function ToolCallEntry({ block }: { block: OutputBlock }) {
         </span>
       </button>
       {isExpanded && block.toolInput && (
-        <pre className="text-[11px] text-gray-400 font-mono mt-1 pl-4 whitespace-pre-wrap break-words max-h-48 overflow-y-auto">
+        <pre className="text-[11px] text-gray-400 font-mono mt-1 pl-4 whitespace-pre-wrap wrap-break-word max-h-48 overflow-y-auto">
           {typeof block.toolInput === "string"
             ? block.toolInput
             : JSON.stringify(block.toolInput, null, 2)}
@@ -307,12 +307,12 @@ function InputBar({
         onKeyDown={handleKeyDown}
         placeholder="Send a message... (Enter to send, Shift+Enter for newline)"
         rows={1}
-        className="flex-1 text-sm px-3 py-1.5 border border-gray-200 rounded resize-none focus:outline-none focus:border-blue-300"
+        className="flex-1 text-sm px-3 py-1.5 border border-gray-200 rounded-sm resize-none focus:outline-hidden focus:border-blue-300"
       />
       <button
         onClick={handleSend}
         disabled={!text.trim()}
-        className="px-3 py-1.5 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-40 shrink-0"
+        className="px-3 py-1.5 text-xs bg-blue-500 text-white rounded-sm hover:bg-blue-600 disabled:opacity-40 shrink-0"
       >
         Send
       </button>
@@ -348,7 +348,7 @@ function ToolsTab({ blocks }: { blocks: OutputBlock[] }) {
             </span>
           </div>
           {block.toolInput && (
-            <pre className="text-[11px] text-gray-500 font-mono whitespace-pre-wrap break-words max-h-32 overflow-y-auto">
+            <pre className="text-[11px] text-gray-500 font-mono whitespace-pre-wrap wrap-break-word max-h-32 overflow-y-auto">
               {typeof block.toolInput === "string"
                 ? block.toolInput
                 : JSON.stringify(block.toolInput, null, 2)}
@@ -373,7 +373,7 @@ function InfoTab({ agent, contextUsage }: { agent: Agent; contextUsage?: Context
       </div>
       <div>
         <div className="text-gray-400 uppercase text-[10px] mb-1">Prompt</div>
-        <pre className="text-gray-600 whitespace-pre-wrap break-words bg-gray-50 rounded p-2 max-h-48 overflow-y-auto">
+        <pre className="text-gray-600 whitespace-pre-wrap wrap-break-word bg-gray-50 rounded-sm p-2 max-h-48 overflow-y-auto">
           {agent.prompt}
         </pre>
       </div>
@@ -600,7 +600,7 @@ export function AgentDetailPanel({
         <div className="flex items-center gap-2 min-w-0">
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 shrink-0"
+            className="p-1 rounded-sm hover:bg-gray-100 text-gray-400 hover:text-gray-600 shrink-0"
             title="Close (Escape)"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -615,7 +615,7 @@ export function AgentDetailPanel({
         </div>
         <button
           onClick={onClose}
-          className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 shrink-0"
+          className="p-1 rounded-sm hover:bg-gray-100 text-gray-400 hover:text-gray-600 shrink-0"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

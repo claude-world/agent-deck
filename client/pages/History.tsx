@@ -346,7 +346,7 @@ export function History() {
 
                             {/* Commit / PR info */}
                             {wf.commit_hash ? (
-                              <div className="flex items-center gap-2 text-[10px] bg-deck-success/5 rounded px-2 py-1.5 border border-deck-success/20">
+                              <div className="flex items-center gap-2 text-[10px] bg-deck-success/5 rounded-sm px-2 py-1.5 border border-deck-success/20">
                                 <svg className="w-3 h-3 text-deck-success shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
@@ -372,7 +372,7 @@ export function History() {
                                 )}
                               </div>
                             ) : wf.status === "completed" || wf.status === "finalizing" ? (
-                              <div className="flex items-center gap-2 text-[10px] bg-deck-warning/5 rounded px-2 py-1.5 border border-deck-warning/20">
+                              <div className="flex items-center gap-2 text-[10px] bg-deck-warning/5 rounded-sm px-2 py-1.5 border border-deck-warning/20">
                                 <svg className="w-3 h-3 text-deck-warning shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                                 </svg>
@@ -410,7 +410,7 @@ export function History() {
                                       {node.agent_name}
                                     </span>
                                     {role && (
-                                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-deck-surface-2 text-deck-muted">
+                                      <span className="text-[10px] px-1.5 py-0.5 rounded-sm bg-deck-surface-2 text-deck-muted">
                                         {role}
                                       </span>
                                     )}

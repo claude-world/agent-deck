@@ -112,7 +112,7 @@ export function CompletedSummary({ onNewMission }: CompletedSummaryProps) {
         {nodeStatuses.map((node) => (
           <div
             key={node.name}
-            className="flex items-center gap-2 px-3 py-1.5 bg-deck-surface rounded border border-deck-border text-xs"
+            className="flex items-center gap-2 px-3 py-1.5 bg-deck-surface rounded-sm border border-deck-border text-xs"
           >
             <StatusDot status={node.status} />
             <span className="text-deck-text flex-1 truncate">{node.name}</span>
@@ -136,7 +136,7 @@ export function CompletedSummary({ onNewMission }: CompletedSummaryProps) {
 
       {/* Commit info */}
       {(activeWorkflow as any)?.commit_hash && (
-        <div className="w-full max-w-md mb-6 px-3 py-2 bg-deck-surface rounded border border-deck-border">
+        <div className="w-full max-w-md mb-6 px-3 py-2 bg-deck-surface rounded-sm border border-deck-border">
           <div className="flex items-center gap-2 text-xs">
             <svg className="w-3.5 h-3.5 text-deck-success shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

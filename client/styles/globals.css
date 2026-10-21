@@ -1,6 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Scan client/ only (the v3 config's content globs) */
+@import 'tailwindcss' source("..");
+
+@theme {
+  --color-deck-bg: #0a0a0f;
+  --color-deck-surface: #12121a;
+  --color-deck-surface-2: #1a1a25;
+  --color-deck-border: #2a2a3a;
+  --color-deck-border-light: #3a3a4a;
+  --color-deck-accent: #6366f1;
+  --color-deck-accent-hover: #818cf8;
+  --color-deck-accent-dim: #4f46e5;
+  --color-deck-success: #22c55e;
+  --color-deck-warning: #f59e0b;
+  --color-deck-error: #ef4444;
+  --color-deck-muted: #6b7280;
+  --color-deck-text: #e5e7eb;
+  --color-deck-text-dim: #9ca3af;
+  --color-deck-text-bright: #f9fafb;
+
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* v3 line heights were absolute, so nested text-[10px] badges inherit them */
+  --text-xs--line-height: 1rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg--line-height: 1.75rem;
+}
+
+/*
+  Tailwind CSS v4 changed some preflight defaults (border color, placeholder
+  color, button cursor). These compatibility styles keep the v3 look.
+
+  If we ever want to remove these styles, we need to add explicit utilities
+  to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* ─── Animations ────────────────────────────────── */
+
+@utility animate-slide-in {
+  animation: slide-in 0.2s ease-out;
+}
+
+@utility animate-slide-up {
+  animation: slide-up 0.2s ease-out;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.15s ease-out;
+}
+
+@utility animate-pulse-once {
+  animation: pulse-border 0.5s ease-in-out;
+}
+
+@utility animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
 
 /* ─── Dark Base ─────────────────────────────────── */
 
@@ -31,30 +106,6 @@
   ::selection {
     background: rgba(99, 102, 241, 0.3);
     color: #f9fafb;
-  }
-}
-
-/* ─── Animations ────────────────────────────────── */
-
-@layer utilities {
-  .animate-slide-in {
-    animation: slide-in 0.2s ease-out;
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.2s ease-out;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.15s ease-out;
-  }
-
-  .animate-pulse-once {
-    animation: pulse-border 0.5s ease-in-out;
-  }
-
-  .animate-pulse-dot {
-    animation: pulse-dot 2s ease-in-out infinite;
   }
 }
 

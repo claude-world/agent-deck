@@ -24,7 +24,7 @@ export class DeckClient {
       : [3002, 3003, 3004, 3005, 3006, 3007];
 
     for (const port of ports) {
-      const url = `http://localhost:${port}`;
+      const url = `http://127.0.0.1:${port}`;
       try {
         const res = await fetch(`${url}/api/deck/settings`, {
           signal: AbortSignal.timeout(1000),

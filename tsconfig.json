@@ -14,6 +14,6 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["server/**/*.ts", "client/**/*.ts", "client/**/*.tsx", "cli/**/*.ts"],
+  "include": ["server/**/*.ts", "client/**/*.ts", "client/**/*.tsx", "cli/**/*.ts", "electron/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

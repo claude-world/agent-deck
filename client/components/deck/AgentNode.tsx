@@ -55,11 +55,11 @@ function AgentNodeComponent({ data }: NodeProps) {
 
   return (
     <div
-      className={`border-l-4 ${borderColor} ${bgColor} rounded-lg shadow-sm border border-gray-200 w-64 overflow-hidden ${
+      className={`border-l-4 ${borderColor} ${bgColor} rounded-lg shadow-xs border border-gray-200 w-64 overflow-hidden ${
         isRunning ? "ring-2 ring-blue-300 ring-opacity-50" : ""
       }`}
     >
-      <Handle type="target" position={Position.Top} className="!bg-gray-400 !w-2 !h-2" />
+      <Handle type="target" position={Position.Top} className="bg-gray-400! w-2! h-2!" />
 
       {/* Header */}
       <div className="px-3 py-2 border-b border-gray-100 flex items-center gap-2">
@@ -94,7 +94,7 @@ function AgentNodeComponent({ data }: NodeProps) {
         <span className="truncate flex-1" title={d.workdir}>
           {d.workdir === "." ? "root" : d.workdir}
         </span>
-        <span className="px-1 py-0.5 bg-gray-200 rounded text-gray-600 font-mono">
+        <span className="px-1 py-0.5 bg-gray-200 rounded-sm text-gray-600 font-mono">
           {d.model}
         </span>
         {d.cost > 0 && (
@@ -104,7 +104,7 @@ function AgentNodeComponent({ data }: NodeProps) {
         )}
       </div>
 
-      <Handle type="source" position={Position.Bottom} className="!bg-gray-400 !w-2 !h-2" />
+      <Handle type="source" position={Position.Bottom} className="bg-gray-400! w-2! h-2!" />
     </div>
   );
 }

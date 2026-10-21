@@ -162,7 +162,7 @@ export function RunningCanvas({ onSelectNode, onAbort }: RunningCanvasProps) {
         </div>
         <button
           onClick={onAbort}
-          className="px-2.5 py-1 text-[10px] bg-deck-error/10 text-deck-error border border-deck-error/30 rounded hover:bg-deck-error/20 transition-colors"
+          className="px-2.5 py-1 text-[10px] bg-deck-error/10 text-deck-error border border-deck-error/30 rounded-sm hover:bg-deck-error/20 transition-colors"
         >
           Abort
         </button>

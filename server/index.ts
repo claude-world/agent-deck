@@ -1,5 +1,5 @@
 /**
- * Agent Deck v1.0 - Server Entry Point
+ * Agent Deck - Server Entry Point
  *
  * Express + WebSocket server with graceful shutdown and auto port.
  */
@@ -8,10 +8,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { createServer } from "http";
+import type { AddressInfo } from "net";
 import path from "path";
 import { fileURLToPath } from "url";
+import pkg from "../package.json" with { type: "json" };
 import db from "./core/db.js";
 import { DeckStore } from "./core/db.js";
+import { LOCAL_HOST, isAllowedOrigin, localOnly } from "./core/local-access.js";
 import { DeckManager } from "./deck/deck-manager.js";
 import { SessionRecovery } from "./deck/session-recovery.js";
 import { LiteLLMBridge } from "./deck/litellm-bridge.js";
@@ -30,8 +33,14 @@ const PORT = parseInt(process.env.PORT || "3002", 10);
 // ─── Express App ───────────────────────────────────
 
 const app = express();
-app.use(cors());
+app.use(localOnly());
+app.use(cors({ origin: (origin, cb) => cb(null, isAllowedOrigin(origin)) }));
 app.use(express.json());
+// Express 5 leaves req.body undefined when no JSON body was sent; routes destructure it
+app.use((req, _res, next) => {
+  req.body ??= {};
+  next();
+});
 
 // ─── Core Services ─────────────────────────────────
 
@@ -101,20 +110,27 @@ if (litellmBridge.isEnabled()) {
   });
 }
 
-// Start server with auto port fallback
+// Start server with auto port fallback (loopback only, see core/local-access.ts)
 function tryListen(port: number, maxRetries = 5): void {
-  server.listen(port, () => {
-    console.log(`
-  ┌─────────────────────────────────┐
-  │  Agent Deck v1.0                │
-  │  http://localhost:${port}          │
-  │  WebSocket: ws://localhost:${port}/ws│
-  │  Dev: http://localhost:5200     │
-  └─────────────────────────────────┘
-    `.trim());
+  server.listen(port, LOCAL_HOST, () => {
+    const { port: boundPort } = server.address() as AddressInfo;
+    const lines = [
+      `Agent Deck v${pkg.version}`,
+      `http://localhost:${boundPort}`,
+      `WebSocket: ws://localhost:${boundPort}/ws`,
+      `Dev: http://localhost:5200`,
+    ];
+    const width = Math.max(...lines.map((l) => l.length)) + 4;
+    console.log(
+      [
+        `┌${"─".repeat(width)}┐`,
+        ...lines.map((l) => `│  ${l.padEnd(width - 2)}│`),
+        `└${"─".repeat(width)}┘`,
+      ].join("\n")
+    );
   });
 
-  server.on("error", (err: NodeJS.ErrnoException) => {
+  server.once("error", (err: NodeJS.ErrnoException) => {
     if (err.code === "EADDRINUSE" && maxRetries > 0) {
       console.log(`[Deck] Port ${port} in use, trying ${port + 1}...`);
       tryListen(port + 1, maxRetries - 1);
